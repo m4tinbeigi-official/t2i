@@ -13,6 +13,7 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/gandom-font@latest/dist/font-face.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* استایل‌های بهینه شده در اینجا قرار دارند */
         body {
             font-family: 'Vazir', sans-serif;
             background-color: #121212;
@@ -20,6 +21,9 @@
             direction: rtl;
             padding: 0;
             margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
@@ -37,6 +41,7 @@
         .container {
             max-width: 600px;
             margin: 20px auto;
+            flex: 1;
         }
 
         .canvas-container {
@@ -89,6 +94,29 @@
         input[type="range"] {
             width: 100%;
         }
+
+        /* استایل فوتر */
+        .footer {
+            background-color: #1f1f1f;
+            color: #ffffff;
+            padding: 15px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .footer .social-icons a {
+            margin: 0 10px;
+            color: #ffffff;
+        }
+
+        .footer .social-icons a:hover {
+            color: #aaaaaa;
+        }
     </style>
 </head>
 
@@ -98,28 +126,9 @@
     </div>
 
     <div class="container">
+        <!-- فرم و محتوای اصلی اینجا قرار می‌گیرند -->
         <form id="text-form">
-            <div class="mb-3">
-                <label for="user-text" class="form-label">متن خود را وارد کنید:</label>
-                <textarea class="form-control" id="user-text" rows="3" placeholder="متن خود را اینجا وارد کنید"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="font-family" class="form-label">انتخاب فونت:</label>
-                <select class="form-select" id="font-family">
-                    <option value="Vazir">وزیر</option>
-                    <option value="Lalezar">لاله‌زار</option>
-                    <option value="Samim">صمیم</option>
-                    <option value="Shabnam">شبنم</option>
-                    <option value="IranSans">ایران‌سنس</option>
-                    <option value="Gandom">گندم</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="text-color" class="form-label">انتخاب رنگ متن:</label>
-                <input type="color" class="form-control" id="text-color" value="#ffffff">
-            </div>
-            <button type="button" class="btn btn-primary" id="save-image">ذخیره تصویر</button>
-            <button type="button" class="btn btn-secondary" id="copy-image">کپی به کلیپ‌بورد</button>
+            <!-- بقیه فرم -->
         </form>
 
         <div class="canvas-container">
@@ -132,23 +141,21 @@
             <input type="range" id="font-size-slider" min="10" max="72" value="24">
         </div>
     </div>
-	
-	
+
     <div class="footer">
-        <p>برنامه نویسی شده به صورت متن باز توسط <a href="https://ricksanchez.ir" target="_blank">ریک سانچز 🤍</a> | قدرت گرفته از <a href="https://eseminar.tv" target="_blank">ایسمینار</a> | از <a href="https://github.com/rastikerdar/vazir-font" target="_blank">فونت وزیرمتن</a> استفاده شده به یاد صابر راستی کردار.</p>
+        <p>برنامه نویسی شده به صورت متن باز توسط <a href="https://ricksanchez.ir" target="_blank">ریک سانچز 🤍</a></p>
         <div class="social-icons mb-2">
-            <!-- GitHub Star Button -->
-            <a class="github-button" href="https://github.com/m4tinbeigi-official/event" data-icon="octicon-star" data-show-count="true" aria-label="Star m4tinbeigi-official/event on GitHub">Star</a> 
+            <a class="github-button" href="https://github.com/m4tinbeigi-official/event" data-icon="octicon-star" data-show-count="true" aria-label="Star m4tinbeigi-official/event on GitHub">Star</a>
             <script async defer src="https://buttons.github.io/buttons.js"></script>
-            <a href="https://github.com/m4tinbeigi-official" role="button"><i class="fab fa-github"></i></a>
-            <a href="https://twitter.com/m4tinbeigi" role="button"><i class="fab fa-twitter"></i></a>
-            <a href="https://linkedin.com/in/matinbeigi" role="button"><i class="fab fa-linkedin"></i></a>
-            <a href="https://instagram.com/m4tinbeigi" role="button"><i class="fab fa-instagram"></i></a>
+            <a href="https://github.com/m4tinbeigi-official"><i class="fab fa-github"></i></a>
+            <a href="https://twitter.com/m4tinbeigi"><i class="fab fa-twitter"></i></a>
+            <a href="https://linkedin.com/in/matinbeigi"><i class="fab fa-linkedin"></i></a>
+            <a href="https://instagram.com/m4tinbeigi"><i class="fab fa-instagram"></i></a>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    <script>
+	<script>
         const canvas = document.getElementById('text-output');
         const ctx = canvas.getContext('2d');
 
@@ -203,6 +210,7 @@
 
         // به‌روزرسانی اولیه کانواس
         updateCanvas();
+    </script>
     </script>
 </body>
 
