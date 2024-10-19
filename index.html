@@ -29,17 +29,36 @@
         }
 
         #text-output {
-            display: none;
-        }
-
-        canvas {
-            margin-top: 20px;
             border: 1px solid #ddd;
         }
 
         .form-control {
             margin-bottom: 10px;
         }
+
+        /* استایل نشانگر استیکی برای اندازه فونت */
+        .font-size-slider {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 20px;
+            left: 10px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            width: 200px;
+        }
+
+        .slider-label {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
     </style>
 </head>
 
@@ -59,68 +78,69 @@
                 </select>
             </div>
             <div class="mb-3">
-                <label for="font-size" class="form-label">اندازه فونت (پیکسل):</label>
-                <input type="number" class="form-control" id="font-size" value="24">
-            </div>
-            <div class="mb-3">
                 <label for="text-color" class="form-label">انتخاب رنگ متن:</label>
                 <input type="color" class="form-control" id="text-color" value="#000000">
             </div>
-            <button type="button" class="btn btn-primary" id="generate-image">تولید تصویر</button>
-            <button type="button" class="btn btn-secondary" id="copy-image">کپی به کلیپ بورد</button>
+            <button type="button" class="btn btn-primary" id="save-image">ذخیره تصویر</button>
         </form>
 
         <div class="canvas-container">
             <canvas id="text-output" width="600" height="400"></canvas>
         </div>
+
+        <!-- نشانگر استیکی برای تغییر اندازه فونت -->
+        <div class="font-size-slider">
+            <div class="slider-label">اندازه فونت: <span id="font-size-label">24</span> پیکسل</div>
+            <input type="range" id="font-size-slider" min="10" max="72" value="24">
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script>
-        document.getElementById('generate-image').addEventListener('click', function () {
+        const canvas = document.getElementById('text-output');
+        const ctx = canvas.getContext('2d');
+
+        // تابع به‌روز رسانی کانواس
+        function updateCanvas() {
             const userText = document.getElementById('user-text').value;
             const fontFamily = document.getElementById('font-family').value;
-            const fontSize = document.getElementById('font-size').value;
+            const fontSize = document.getElementById('font-size-slider').value;
             const textColor = document.getElementById('text-color').value;
 
-            if (!userText) {
-                alert('لطفا متن خود را وارد کنید.');
-                return;
-            }
+            // نمایش اندازه فونت در کنار نشانگر
+            document.getElementById('font-size-label').textContent = fontSize;
 
-            const canvas = document.getElementById('text-output');
-            const ctx = canvas.getContext('2d');
-
-            // تنظیم پس‌زمینه سفید برای تصویر
-            ctx.fillStyle = '#FFFFFF';
+            // پاک‌کردن کانواس و تنظیمات پیش‌زمینه
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#FFFFFF';  // پس‌زمینه سفید
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // تنظیم فونت و استایل
+            // تنظیمات فونت و رنگ
             ctx.font = `${fontSize}px ${fontFamily}`;
-            ctx.fillStyle = textColor;  // رنگ متن
+            ctx.fillStyle = textColor;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
             // رسم متن در مرکز
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // پاک کردن محتوای قبلی
-            ctx.fillRect(0, 0, canvas.width, canvas.height); // تنظیم پس‌زمینه سفید
-            ctx.fillStyle = textColor;  // تنظیم مجدد رنگ متن
             ctx.fillText(userText, canvas.width / 2, canvas.height / 2);
+        }
 
-            canvas.style.display = 'block';  // نمایش کانواس
+        // رویدادهای ورودی برای به‌روز رسانی لحظه‌ای
+        document.getElementById('user-text').addEventListener('input', updateCanvas);
+        document.getElementById('font-family').addEventListener('change', updateCanvas);
+        document.getElementById('text-color').addEventListener('input', updateCanvas);
+        document.getElementById('font-size-slider').addEventListener('input', updateCanvas);
+
+        // ذخیره‌سازی تصویر به صورت PNG
+        document.getElementById('save-image').addEventListener('click', function () {
+            const link = document.createElement('a');
+            link.download = 'text-image.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
         });
 
-        document.getElementById('copy-image').addEventListener('click', function () {
-            const canvas = document.getElementById('text-output');
-            canvas.toBlob(function (blob) {
-                const item = new ClipboardItem({ "image/png": blob });
-                navigator.clipboard.write([item]).then(function () {
-                    alert('تصویر به کلیپ بورد کپی شد!');
-                }, function (error) {
-                    alert('خطا در کپی تصویر: ' + error);
-                });
-            });
-        });
+        // به‌روزرسانی اولیه کانواس
+        updateCanvas();
     </script>
 </body>
 
