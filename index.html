@@ -148,10 +148,8 @@
             // نمایش اندازه فونت در کنار نشانگر
             document.getElementById('font-size-label').textContent = fontSize;
 
-            // پاک‌کردن کانواس و تنظیمات پیش‌زمینه
+            // پاک‌کردن کانواس و تنظیمات پیش‌زمینه (بدون پس‌زمینه)
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#121212';  // پس‌زمینه تیره
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             // تنظیمات فونت و رنگ
             ctx.font = `${fontSize}px ${fontFamily}`;
